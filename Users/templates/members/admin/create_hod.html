@@ -1,0 +1,105 @@
+{% extends "members/admin/base_site.html" %}
+
+{% block title %} Create HOD {% endblock title %}
+
+{% block main %}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Create HOD</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url "admin-index-view" %}">Home</a></li>
+                    <li class="breadcrumb-item active">Create HOD</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section dashboard">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card border border-dark shadow">
+
+                        <div class="card-header text-center bg-primary text-light fw-bold fs-5">
+                            Create HOD Profile
+                        </div>
+
+                        <div class="card-body pt-4">                        
+
+                            {% include "components/alert.html" %}
+
+                            <form id="createHodForm" class="row g-3" method="post">
+                                {% csrf_token %}
+
+                                <div class="col-6">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="first_name" required>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="last_name" required>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" id="phoneNumber" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits" name="phone_number" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" required>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="ConfirmPassword" name="confirm_password" required>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="designation" class="form-label">Designation</label>
+                                    <select id="designation" class="form-select" name="designation" required>
+                                        <option value="">choose designation</option>
+                                        <option value="Professor">Professor</option>
+                                        <option value="Ast.Professor">Ast.Professor</option>
+                                        <option value="Staff">Staff</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="department" class="form-label">Department</label>
+                                    <select id="department" class="form-select" name="department" required>
+                                        <option value="">choose department</option>
+                                        <option value="Mechanical Enginnering">Mechanical Enginnering</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Civil Enginnering">Civil Enginnering</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Create HOD</button>
+                                    <a href="{% url "admin-index-view" %}" class="btn btn-secondary">Close</a>
+                                </div>
+                            </form>
+            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+{% endblock main %}

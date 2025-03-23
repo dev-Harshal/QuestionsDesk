@@ -1,0 +1,76 @@
+{% extends "members/teacher/base_site.html" %}
+
+{% block title %} Create Question Set {% endblock title %}
+
+{% block main %}
+
+    <main id="main" class="main">
+        
+        <div class="pagetitle">
+            <h1>Create Question Set</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url "teacher-index-view" %}">Home</a></li>
+                    <li class="breadcrumb-item active">Create Questions Set</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section dashboard">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card border border-dark shadow">
+                        <div class="card-header text-center bg-primary text-light fw-bold fs-5">
+                            Create Question Set
+                        </div>
+                        
+                        <div class="card-body pt-4">
+
+                            {% include "components/alert.html" %}
+
+                            <form id="createQuestionSetForm" class="row g-3" method="post">
+                                {% csrf_token %}
+
+                                <div class="col-12">
+                                    <label for="subjectCode" class="form-label">Subject</label>
+                                    <select id="subjectCode" class="form-select" name="code" required>
+                                        <option value="">select subject</option>
+                                        {% for subject in subjects %}
+                                            <option value="{{subject.code}}">{{subject}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-3">
+                                    <label for="unit" class="form-label">Unit No</label>
+                                    <input type="number" class="form-control" id="unit" placeholder="No." name="unit" min="1" required>
+                                </div>
+
+                                <div class="col-9">
+                                    <label for="unitTitle" class="form-label">Unit Title</label>
+                                    <input type="text" class="form-control" id="unitTitle" name="unit_title" required>
+                                </div>
+
+                                <div class="col-3">
+                                    <label for="co" class="form-label">CO</label>
+                                    <input type="number" class="form-control" id="co" placeholder="No." name="co" min="1" required>
+                                </div>
+
+                                <div class="col-9">
+                                    <label for="coTitle" class="form-label">CO Title</label>
+                                    <input type="text" class="form-control" id="cocoTitle_title" name="co_title" required>
+                                </div>
+
+                                <div class=" col-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Create Question Set</button>
+                                </div>
+                            </form>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+{% endblock main %}
