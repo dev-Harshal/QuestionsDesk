@@ -152,9 +152,7 @@ def update_questions_view(request, subject_id, unit):
             question = Question.objects.create(title=title, mark=int(mark), levels=levels)
             created_questions.append(question)
 
-        question_set.questions.clear()
-        questions = existing_questions + created_questions
-        question_set.questions.add(*questions)
+        question_set.questions.add(*created_questions)
 
         messages.success(request, f'Questions updated for Question set of {question_set}.')
         return JsonResponse({'status':'success', 'success_url':f'/teacher/update/questions/{question_set.subject.id}/{question_set.unit}/'})

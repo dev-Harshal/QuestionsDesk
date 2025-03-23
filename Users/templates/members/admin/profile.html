@@ -1,16 +1,16 @@
 {% extends "members/admin/base_site.html" %}
 
-{% block title %} Profile {% endblock title %}
+{% block title %} Profile Details {% endblock title %}
 
 {% block main %}
     <main id="main" class="main">
             
         <div class="pagetitle">
-            <h1>Profile</h1>
+            <h1>Profile Details</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url "admin-index-view" %}">Home</a></li>
-                    <li class="breadcrumb-item active">Profile</li>
+                    <li class="breadcrumb-item active">Profile Details</li>
                 </ol>
             </nav>
         </div>
@@ -18,9 +18,10 @@
         <section class="section profile">
             <div class="row justify-content-center">
                 <div class="col-xl-8">
+
                     <div class="card border border-dark shadow">
                         <div class="card-header text-center bg-primary text-light fw-bold fs-5">
-                            {{request.user}}'s Profile
+                            {{request.user}}'s Profile Details
                         </div>
 
                         <div class="card-body pt-3">
@@ -164,7 +165,6 @@
                                 </div>
             
                             </div>
-            
                         </div>
                     </div>
                 </div>
