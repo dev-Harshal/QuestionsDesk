@@ -183,14 +183,14 @@ def admin_create_hod_view(request):
             password = password,
             role = 'HOD'
         )
-        Profile.objects.create(
+        profile = Profile.objects.create(
             user = user,
             phone_number = phone_number,
             designation = designation,
             department = department
         )
 
-        messages.success(request, f'HOD {user} created successfully.')
+        messages.success(request, f'{profile} created successfully.')
         return JsonResponse({'status':'success', 'success_url':f'/admin/update/hod/{user.id}/'})
     return render(request, 'members/admin/create_hod.html')
 
@@ -233,7 +233,7 @@ def admin_update_hod_view(request, user_id):
         profile.designation = designation
         profile.save()
 
-        messages.success(request, f'Profile of HOD {user} saved successfully.')
+        messages.success(request, f'Profile {profile} saved successfully.')
         return JsonResponse({'status':'success', 'success_url':f'/admin/update/hod/{user.id}/'})
     referer = request.META.get('HTTP_REFERER', '')
     return render(request, 'members/admin/update_hod.html', context={'user':user, 'referer':referer})
@@ -339,7 +339,7 @@ def hod_create_teacher_view(request):
         for code in request.POST.getlist('subject_codes'):
             subject = Subject.objects.get(code=code)
             if Profile.objects.filter(subjects=subject).exists():
-                return JsonResponse({'status':'error', 'message':f'Subject {subject} is already assigned to a Teacher.'})
+                return JsonResponse({'status':'error', 'message':f'Subject {subject} is already assigned to a teacher.'})
             selected_subjects.append(subject)
 
         user = User.objects.create_user(
@@ -361,7 +361,7 @@ def hod_create_teacher_view(request):
         profile.subjects.add(*selected_subjects)
         profile.save()
 
-        messages.success(request, f'Teacher {user} created successfully.')
+        messages.success(request, f'{profile} created successfully.')
         return JsonResponse({'status':'success', 'success_url':f'/hod/update/teacher/{user.id}/'})
     subjects = Subject.objects.filter(department=request.user.profile.department).all()
     return render(request, 'members/hod/create_teacher.html', context={'subjects':subjects})
@@ -408,19 +408,20 @@ def hod_update_teacher_view(request, user_id):
             subject = Subject.objects.get(code=code)
             subject_profiles = Profile.objects.filter(subjects=subject)
             if subject_profiles.exists() and subject_profiles[0] != profile:
-                return {'status':'error', 'message':f'Subject {subject} is already assigned to a Teacher.'}
+                return {'status':'error', 'message':f'Subject {subject} is already assigned to a teacher.'}
             selected_subjects.append(subject)
 
         profile.subjects.clear()
         profile.subjects.add(*selected_subjects)
         profile.save()
 
-        messages.success(request, f'Profile of Teacher {user} updated successfully.')
+        messages.success(request, f'Profile of {profile} saved successfully.')
         return JsonResponse({'status':'success', 'success_url':f'/hod/update/teacher/{user.id}/'})
-    subjects = Subject.objects.all()
-    selected_subjects = user.profile.subjects.values_list('code', flat=True)
-    referer = request.META.get('HTTP_REFERER', '')
-    return render(request, 'members/hod/update_teacher.html', context={'user':user,'subjects':subjects,'selected_subjects':selected_subjects, 'referer':referer})
+    else:
+        subjects = Subject.objects.all()
+        selected_subjects = user.profile.subjects.values_list('code', flat=True)
+        referer = request.META.get('HTTP_REFERER', '')
+        return render(request, 'members/hod/update_teacher.html', context={'user':user,'subjects':subjects,'selected_subjects':selected_subjects, 'referer':referer})
 
 def hod_list_users_view(request, role):
     users = User.objects.filter(role=role).all()

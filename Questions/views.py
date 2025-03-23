@@ -8,7 +8,7 @@ from Questions.services import *
 # Create your views here.
 
 def create_question_set_view(request):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         code = request.POST.get('code')
         subject = Subject.objects.get(code=code)
         unit = request.POST.get('unit')
@@ -73,18 +73,22 @@ def list_question_sets_view(request):
 def delete_question_set_view(request, subject_id, unit):
     subject = Subject.objects.get(id=subject_id)
     question_set = QuestionSet.objects.get(subject=subject, unit=int(unit))
+
     for question in question_set.questions.all():
         question.delete()
     question_set.delete()
+
     messages.success(request, f'Question set for {question_set} deleted successfully.')
+
     existing_question_sets = QuestionSet.objects.filter(subject=subject).values_list('unit', flat=True)
+
     if existing_question_sets:
         existing_question_sets = sorted([int(u) for u in existing_question_sets])
         unit = int(unit)
         closest_unit = min(existing_question_sets, key=lambda x: abs(x - unit))
         return redirect('update-questions-view', subject_id=subject.id, unit=closest_unit)
     else:
-        return redirect('list-question-set-view')
+        return redirect('list-question-sets-view')
 
 def delete_question_sets_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
@@ -96,13 +100,15 @@ def delete_question_sets_view(request, subject_id):
     messages.success(request, f'Question sets for {subject} deleted successfully.')
     return redirect('list-question-sets-view')
 
+
 def create_questions_view(request, question_set_id):
     question_set = QuestionSet.objects.get(id=question_set_id)
+
     if request.method == 'POST':
-        created_questions = []
         question_titles = request.POST.getlist('question_title[]')
         marks = request.POST.getlist('mark[]')
 
+        created_questions = []
         for title, mark in zip(question_titles, marks):
             levels = classify_blooms_taxonomy(title)
             question = Question.objects.create(title=title, mark=int(mark), levels=levels)
@@ -116,7 +122,6 @@ def create_questions_view(request, question_set_id):
 def update_questions_view(request, subject_id, unit):
     subject = Subject.objects.get(id=subject_id)
     question_set = QuestionSet.objects.get(subject=subject, unit=unit)
-    
     if request.method == 'POST':
         existing_question_ids = request.POST.getlist('existing_question_id[]')
         existing_question_titles = request.POST.getlist('existing_question_title[]')
@@ -151,10 +156,15 @@ def update_questions_view(request, subject_id, unit):
         questions = existing_questions + created_questions
         question_set.questions.add(*questions)
 
-        messages.success(request, f'Question updated for Question set for {question_set}.')
+        messages.success(request, f'Questions updated for Question set of {question_set}.')
         return JsonResponse({'status':'success', 'success_url':f'/teacher/update/questions/{question_set.subject.id}/{question_set.unit}/'})
+    else:
+        question_sets =QuestionSet.objects.filter(subject=question_set.subject)
+        units = list(set(question_sets.values_list('unit', flat=True).order_by('unit')))
+        questions = question_set.questions.all().order_by('mark','levels')
+        return render(request, 'question_sets/questions/update_questions.html', context={'question_set':question_set,'questions':questions, 'units':units, 'current_unit':question_set.unit})
 
-    question_sets =QuestionSet.objects.filter(subject=question_set.subject)
-    units = question_sets.values_list('unit', flat=True).order_by('unit')
-    questions = question_set.questions.all().order_by('mark','levels')
-    return render(request, 'question_sets/questions/update_questions.html', context={'question_set':question_set,'questions':questions, 'units':units, 'current_unit':question_set.unit})
+def list_questions_view(request, question_set_id):
+    question_set = QuestionSet.objects.get(id=question_set_id)
+    questions = question_set.questions.all().order_by('mark', 'levels')
+    return render(request, 'question_sets/questions/list_questions.html', context={'question_set':question_set,'questions':questions})

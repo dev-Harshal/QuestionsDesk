@@ -20,7 +20,9 @@
         <section class="section dashboard">
             <div class="row justify-content-center">
                 <div class="col-lg-12">
+
                     <div class="card border border-dark shadow">
+
                         <div class="card-header text-center bg-primary text-light fw-bold fs-5">
                             Update {{question_set}} Question's
                         </div>
@@ -33,20 +35,21 @@
                             </h5>
 
                             <div class="mb-3">
-                                <div class="row justify-content-between g-2">
-                                    <div class="col-2">
-                                        <span class="fw-semibold">Unit No ({{question_set.unit}}) : </span>
+                                <div class="row justify-content-between">
+                                    <div class="col">
+                                        <span class="fw-semibold">Unit No ({{question_set.unit}})</span>
                                     </div>
                                     <div class="col-10">
-                                        <p class="card-text">{{question_set.unit_title}}</p>
+                                        <p class="card-text">: {{question_set.unit_title}}</p>
                                     </div>
                                 </div>
-                                <div class="row justify-content-between g-2">
-                                    <div class="col-2">
-                                        <span class="fw-semibold">CO ({{question_set.co}}) : </span>
+
+                                <div class="row justify-content-between">
+                                    <div class="col">
+                                        <span class="fw-semibold">CO ({{question_set.co}})</span>
                                     </div>
                                     <div class="col-10">
-                                        <p class="card-text">{{question_set.co_title}}</p>
+                                        <p class="card-text">: {{question_set.co_title}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -59,29 +62,31 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="col-2 text-end">
+
+                                <div class="col text-end">
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Options
                                         </button>
-                                        <ul class="dropdown-menu bg-secondary-subtle">
+
+                                        <ul class="dropdown-menu bg-tertiary-subtle border border-dark shadow">
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center" href="{% url "update-question-set-view" question_set.id %}">
-                                                    <i class="bi bi-info-square-fill"></i>
+                                                    <i class="bi bi-info-square-fill text-primary"></i>
                                                     <span>Update Info</span>
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center" href="">
-                                                    <i class="bi bi-card-checklist"></i>
+                                                <a class="dropdown-item d-flex align-items-center" href="{% url "list-questions-view" question_set.id %}">
+                                                    <i class="bi bi-card-checklist text-success"></i>
                                                     <span>Detail View</span>
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center" href="{% url "delete-question-set-view" question_set.subject.id question_set.unit %}">
-                                                    <i class="bi bi-trash-fill"></i>
+                                                    <i class="bi bi-trash-fill text-danger"></i>
                                                     <span>Delete Set</span>
                                                 </a>
                                             </li>
@@ -94,11 +99,10 @@
 
                             <form id="updateQuestionForm" method="post">
                                 {% csrf_token %}
-                                <div>
-                                    <input type="hidden" id="subjectId" value="{{question_set.subject.id}}">
-                                    <input type="hidden" id="currentUnit" value="{{current_unit}}">
-                                    <input type="hidden" name="id" id="id" value="{{question_set.id}}">
-                                </div>
+
+                                <input type="hidden" id="subjectId" value="{{question_set.subject.id}}">
+                                <input type="hidden" id="currentUnit" value="{{current_unit}}">
+                                <input type="hidden" name="id" id="id" value="{{question_set.id}}">                                
 
                                 <div id="questionContainer">
                                     {% for question in questions %}
@@ -118,7 +122,7 @@
                                 
                                             <div class="col-3">
                                                 <label for="levels" class="form-label">Levels</label>
-                                                <input type="text" class="form-control" name="existing_level[]" value="{% if question.levels == '' %}Undefined{% else %}{{question.levels}}{% endif %}" readonly required style="overflow-x: scroll; white-space: nowrap; text-overflow: ellipsis;">
+                                                <input type="text" class="form-control" name="existing_level[]" value="{{question.levels}}" readonly required style="overflow-x: scroll; white-space: nowrap; text-overflow: ellipsis;">
                                             </div>
 
                                             <div class="col-1">
@@ -128,6 +132,7 @@
                                                 
                                                 <div class="modal fade" id="verticalycentered({{ forloop.counter }})" tabindex="-1">
                                                     <div class="modal-dialog modal-dialog-centered">
+
                                                         <div class="modal-content">
                                                             <div class="modal-header bg-primary text-light fw-bold">
                                                                 <h5 class="modal-title">Delete Question Confirmation</h5>
@@ -144,9 +149,11 @@
                                                                 <button type="submit" value='({{ forloop.counter }})' class="btn btn-danger removeRow">Delete</button>
                                                             </div>
                                                         </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -160,11 +167,12 @@
                                     <button type="submit" class="btn btn-primary">Save Question(s)</button>
                                     <a href="{% url "list-question-sets-view" %}" class="btn btn-secondary">Close</a>
                                 </div>
-
                             </form>
             
                         </div>
+
                     </div>
+                    
                 </div>
             </div>
         </section>

@@ -25,7 +25,7 @@ class QuestionSet(models.Model):
     created_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.subject.code} :{self.subject.name} - Unit: {self.unit}'
+        return f'{self.subject.code}: {self.subject.name} (Unit {self.unit})'
 
     class Meta:
         db_table = 'Question Sets'

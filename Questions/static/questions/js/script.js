@@ -54,7 +54,6 @@ if (updateQuestionSetForm) {
 const questionContainer = document.getElementById('questionContainer');
 const addQuestionRow = document.getElementById('addQuestionRow');
 
-
 if (addQuestionRow) {
     addQuestionRow.addEventListener('click', function(event) {
 
@@ -176,6 +175,7 @@ if (updateQuestionForm) {
         const subjectId = document.getElementById('subjectId').value;
         
         const url = `/teacher/update/questions/${subjectId}/${currentUnit}/`
+
         fetch(url, {
             method : 'POST',
             headers : {
@@ -192,7 +192,6 @@ if (updateQuestionForm) {
                 popAlert(data)
             }
         })
-
     })
 }
 

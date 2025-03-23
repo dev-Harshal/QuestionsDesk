@@ -68,7 +68,7 @@ class Subject(models.Model):
     scheme = models.CharField(max_length=10, null=False, blank=False)
 
     def __str__(self):
-        return f'{self.code} - {self.name} - Scheme: {self.scheme}'
+        return f'{self.code}: {self.name}  (Scheme {self.scheme})'
     
     class Meta:
         db_table = 'Subjects'

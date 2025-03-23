@@ -2,7 +2,6 @@
 
 {% block title %} Create Question's {% endblock title %}
 
-
 {% block main %}
 
     <main id="main" class="main">
@@ -19,10 +18,12 @@
 
         <section class="section dashboard">
             <div class="row justify-content-center">
-                <div class="col-lg-9">
+                <div class="col-lg-10">
+
                     <div class="card border border-dark shadow">
+
                         <div class="card-header text-center bg-primary text-light fw-bold fs-5">
-                            Create Question's
+                            Create {{question_set}} Question's
                         </div>
 
                         <div class="card-body">
@@ -33,20 +34,21 @@
                             </h5>
 
                             <div class="mb-3">
-                                <div class="row justify-content-between g-2">
-                                    <div class="col-2">
-                                        <span class="fw-semibold">Unit No ({{question_set.unit}}) : </span>
+                                <div class="row justify-content-between">
+                                    <div class="col">
+                                        <span class="fw-semibold">Unit No ({{question_set.unit}})</span>
                                     </div>
                                     <div class="col-10">
-                                        <p class="card-text">{{question_set.unit_title}}</p>
+                                        <p class="card-text">: {{question_set.unit_title}}</p>
                                     </div>
                                 </div>
-                                <div class="row justify-content-between g-2">
-                                    <div class="col-2">
-                                        <span class="fw-semibold">CO ({{question_set.co}}) : </span>
+
+                                <div class="row justify-content-between">
+                                    <div class="col">
+                                        <span class="fw-semibold">CO ({{question_set.co}})</span>
                                     </div>
                                     <div class="col-10">
-                                        <p class="card-text">{{question_set.co_title}}</p>
+                                        <p class="card-text">: {{question_set.co_title}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -56,9 +58,7 @@
                             <form id="createQuestionForm" method="post">
                                 {% csrf_token %}
 
-                                <div>
-                                    <input type="hidden" name="id" id="id" value="{{question_set.id}}">
-                                </div>
+                                <input type="hidden" name="id" id="id" value="{{question_set.id}}">
 
                                 <div id="questionContainer">
 
@@ -81,6 +81,7 @@
                                             
                                             <div class="modal fade" id="verticalycentered(1)" tabindex="-1">
                                                 <div class="modal-dialog modal-dialog-centered">
+
                                                     <div class="modal-content">
                                                             <div class="modal-header bg-primary text-light fw-bold">
                                                                 <h5 class="modal-title">Delete Question Confirmation</h5>
@@ -97,9 +98,11 @@
                                                                 <button type="submit" value="(1)" class="btn btn-danger removeRow">Delete</button>
                                                             </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     
                                 </div>
@@ -116,7 +119,9 @@
                             </form>
             
                         </div>
+
                     </div>
+                    
                 </div>
             </div>
         </section>

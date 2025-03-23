@@ -17,10 +17,12 @@
 
         <section class="section dashboard">
             <div class="row justify-content-center">
-                <div class="col-lg-9">
+                <div class="col-lg-8">
+
                     <div class="card border border-dark shadow">
+
                         <div class="card-header text-center bg-primary text-light fw-bold fs-5">
-                            Update Question Set
+                            Update {{question_set}} Details
                         </div>
                         
                         <div class="card-body pt-4">
@@ -66,9 +68,10 @@
 
                                 <div class=" col-12 text-center">
                                     <button type="submit" class="btn btn-primary">Save Question Set</button>
+
                                     <a href="{% url "update-questions-view" question_set.subject.id question_set.unit %}" class="btn btn-secondary">
-                                        Questions List
-                                        <i class="bi bi-arrow-bar-right"></i>
+                                        Back
+                                        <i class="bi bi-arrow-right"></i>
                                     </a>
                                 </div>
                             </form>
