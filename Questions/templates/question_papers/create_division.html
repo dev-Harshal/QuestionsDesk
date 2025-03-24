@@ -1,0 +1,75 @@
+{% extends "members/teacher/base_site.html" %}
+
+{% block title %} Create Division {% endblock title %}
+
+{% block main %}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Create Division</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url "teacher-index-view" %}">Home</a></li>
+                    <li class="breadcrumb-item active">Create Division</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <section class="section dashboard">
+            <div class="row justify-content-center">
+                <div class="col-9">
+         
+                    <div class="card ">
+                        <div class="card-header text-center bg-primary text-light fw-bold fs-5">
+                            Create Division for {{question_paper.paper_title}}
+                        </div>
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">Fill details and proceed to select questions.</h5>
+
+                            {% include "components/alert.html" %}
+
+                            <form id="createDivisionForm" method="post" class="row g-3">
+                                {% csrf_token %}
+
+                                <input type="hidden" name="id" id="id" value="{{question_paper.id}}">
+
+                                <div class="col-10">
+                                    <label for="title" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" required>
+                                </div>
+
+                                <div class="col-2">
+                                    <label for="marks" class="form-label">Total Marks</label>
+                                    <input type="number" min="1" class="form-control" id="marks" name="marks" required>
+                                </div>
+
+                                <div class="col-4">
+                                    <label for="questionMark" class="form-label">Per Question Marks</label>
+                                    <input type="number" min="1" class="form-control" id="questionMark" name="question_mark" required>
+                                </div>
+
+                                <div class="col-3">
+                                    <label for="extras" class="form-label">Extra Questions</label>
+                                    <input type="number" min="0" class="form-control" id="extras" name="extras" required>
+                                </div>
+
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Select Questions</button>
+                                </div>
+                                                            
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+{% endblock main %}

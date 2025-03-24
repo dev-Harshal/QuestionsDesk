@@ -9,5 +9,10 @@ urlpatterns = [
     path('delete/question-set/<int:subject_id>/<int:unit>/', delete_question_set_view, name='delete-question-set-view'),
     path('create/questions/<int:question_set_id>/', create_questions_view, name='create-questions-view'),
     path('update/questions/<int:subject_id>/<int:unit>/', update_questions_view, name='update-questions-view'),
-    path('list/questions/<int:question_set_id>/', list_questions_view, name='list-questions-view')
+    path('list/questions/<int:question_set_id>/', list_questions_view, name='list-questions-view'),
+
+    path('create/question-paper/', create_question_paper_view, name='create-question-paper-view'),
+    path('create/division/<int:question_paper_id>/', create_division_view, name='create-division-view'),
+    path('add/questions/<int:division_id>/<int:question_paper_id>/', add_questions_view, name='add-questions-view'),
+
 ]

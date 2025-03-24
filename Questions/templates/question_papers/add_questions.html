@@ -1,0 +1,113 @@
+{% extends "members/teacher/base_site.html" %}
+
+{% block title %} Select Questions {% endblock title %}
+
+{% block main %}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Select Questions</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url "teacher-index-view" %}">Home</a></li>
+                    <li class="breadcrumb-item active">Select Questions</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <section class="section dashboard">
+            <div class="row justify-content-center">
+                <div class="col-12">
+
+                    {% include "components/alert.html" %}
+            
+                    <div class="card ">
+                        <div class="card-header text-center bg-primary text-light fw-bold fs-5">
+                            Select Questions for Division
+                        </div>
+
+                        <div class="card-body">
+
+                            <h5 class="card-title pb-2 d-flex justify-content-between">
+                                {{division.title}}
+                                <span>Marks: {{division.marks}}</span>
+                            </h5>
+                            <span class="badge rounded-pill mb-3 text-bg-{% if division.status == 'Complete' %}success{% else %}warning{% endif %}">Status: {{division.status}}</span>
+
+                            <form id="addQuestionsForm" method="post">
+                                {% csrf_token %}
+
+                                <input type="hidden" name="division_id" id="divisionId" value="{{division.id}}">
+                                <input type="hidden" name="question_paper_id" id="questionPaperId" value="{{question_paper.id}}">
+
+                                <div>
+                                    {% for question_set in question_sets  %}
+
+                                    {% if question_set.filtered_questions %}
+                                    <div class="mb-3">
+                                        <div class="row justify-content-between">
+                                            <div class="col">
+                                                <span class="fw-semibold">Unit No ({{question_set.unit}})</span>
+                                            </div>
+                                            <div class="col-10">
+                                                <p class="card-text">: {{question_set.unit_title}}</p>
+                                            </div>
+                                        </div>
+        
+                                        <div class="row justify-content-between">
+                                            <div class="col">
+                                                <span class="fw-semibold">CO ({{question_set.co}})</span>
+                                            </div>
+                                            <div class="col-10">
+                                                <p class="card-text">: {{question_set.co_title}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                        {% for question in question_set.filtered_questions%}
+                                            <div class="row align-items-center mb-3 questionRow">
+                                                
+                                                <div class="col-1">
+                                                    <input class="form-check-input" type="checkbox" name="question_id[]" value="{{question.id}}" id="flexCheckDefault" style="transform: scale(1.5); width: 15px; height: 15px;">
+                                                </div>
+
+                                                <div class="col-6">
+                                                    <label for="questionTitle" class="form-label">({{ forloop.counter }}) Question Title</label>
+                                                    <input type="text" class="form-control" name="title[]" value="{{question.title}}" readonly>
+                                                </div>
+                                     
+                                                <div class="col-2">
+                                                    <label for="mark" class="form-label">Mark</label>
+                                                    <input type="text" class="form-control" name="mark[]" value="{{question.mark}}" readonly>
+                                                </div>
+                                    
+                                                <div class="col-3">
+                                                    <label for="levels" class="form-label">Levels</label>
+                                                    <input type="text" class="form-control" name="level[]" value="{{question.levels}}" readonly style="overflow-x: scroll; white-space: nowrap; text-overflow: ellipsis;">
+                                                </div>
+                                            </div>
+                                            
+                                        {% endfor %}
+                                        <hr>
+                                    {% endfor %}
+                                </div>
+
+                                <div class=" col-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Save Question(s)</button>
+                                    <a href="{% url "list-question-sets-view" %}" class="btn btn-secondary">Close</a>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+{% endblock main %}

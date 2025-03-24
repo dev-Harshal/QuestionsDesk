@@ -37,6 +37,12 @@ class Division(models.Model):
     question_mark = models.PositiveIntegerField(null=False, blank=False) 
     extras = models.PositiveIntegerField(null=False, blank=False)
     questions = models.ManyToManyField(Question, related_name='divisions', blank=True)
+    status = models.CharField(max_length=100, null=False, blank=False, default='Incomplete')
+
+    def save(self ,*args, **kwargs):
+        if self.questions.count() == (self.marks / self.question_mark) + (self.extras):
+            self.status = "Complete"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -46,18 +52,28 @@ class Division(models.Model):
 
 class QuestionPaper(models.Model):
     id = models.BigAutoField(primary_key=True)
-    type = models.CharField(max_length=20, null=False, blank=False)
-    title = models.CharField(max_length=255, null=False, blank=False)
+    paper_type = models.CharField(max_length=20, null=False, blank=False)
+    paper_title = models.CharField(max_length=255, null=False, blank=False)
     subject = models.ForeignKey(Subject, related_name='question_papers', on_delete=models.CASCADE)
-    marks = models.PositiveIntegerField(null=False, blank=False, default=0)
+    total_marks = models.PositiveIntegerField(null=False, blank=False, default=0)
     academic_year = models.CharField(max_length=10, null=False, blank=False)
-    date = models.DateField(null=True, blank=False)
-    time = models.CharField(max_length=100, null=True, blank=False)
+    exam_date = models.DateField(null=True, blank=False)
+    exam_time = models.CharField(max_length=100, null=True, blank=False)
+    division = models.PositiveIntegerField(null=False, blank=False, default=1)
     divisions = models.ManyToManyField(Division, related_name='question_papers')
+    status = models.CharField(max_length=100, null=False, blank=False, default='Incomplete')
     created_date = models.DateField(auto_now_add=True)
 
+    def save(self ,*args, **kwargs):
+        status = 'Complete'
+        for division in self.divisions:
+            if division.status == 'Incomplete':
+                status = 'Incomplete'
+        self.status = status
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f'{self.title} ({self.academic_year})'
+        return f'{self.paper_title} ({self.academic_year})'
 
     class Meta:
         db_table = 'Question Papers'
