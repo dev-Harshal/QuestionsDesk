@@ -1,0 +1,134 @@
+{% extends "members/teacher/base_site.html" %}
+
+{% block title %} Question Paper {% endblock title %}
+
+{% block main %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Questions Paper</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url "teacher-index-view" %}">Home</a></li>
+                <li class="breadcrumb-item active">Questions Paper</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <section class="section dashboard">
+        <div class="row justify-content-center">
+            <div class="col-12">
+
+                {% include "components/alert.html" %}
+        
+                <div class="card ">
+                    <div class="card-body">
+        
+                        <p class="card-text text-center mb-0 pb-0 pt-2">{{request.user.institute}}</p>
+                        <p class="card-text text-center mb-0 pb-0">Department of {{request.user.profile.department}}</p>
+                        <h5 class="card-title text-center text-dark pt-2">{{question_paper.paper_title}} <span class="fw-normal fs-6 text-dark">(Academic Year {{question_paper.academic_year}})</span></h5>
+                        
+                        <div class="row justify-content-between mb-3">
+
+                            <div class="col-4">
+
+                                <div class="row" style="font-weight: 600;">
+                                    <div class="col-6 mb-0 pb-0 ps-0 d-flex justify-content-between align-items-center">
+                                        Semester
+                                        <span>:</span>
+                                    </div>
+                                    <div class="col-auto mb-0 pb-0 px-0">
+                                        {{question_paper.subject.semester}}
+                                    </div>
+                                </div>
+
+                                <div class="row" style="font-weight: 600;">
+                                    <div class="col-6 mb-0 pb-0 ps-0 d-flex justify-content-between align-items-center">
+                                        Subject Title
+                                        <span>:</span>
+                                    </div>
+                                    <div class="col-auto mb-0 pb-0 px-0">
+                                        {{question_paper.subject.name}}
+                                    </div>
+                                </div>
+
+                                <div class="row" style="font-weight: 600;">
+                                    <div class="col-6 mb-0 pb-0 ps-0 d-flex justify-content-between align-items-center">
+                                        Subject Code
+                                        <span>:</span>
+                                    </div>
+                                    <div class="col-auto mb-0 pb-0 px-0">
+                                        {{question_paper.subject.code}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+
+                                {% if question_paper.date %}
+                                
+                                <div class="row justify-content-end" style="font-weight: 600;">
+                                    <div class="col-5 mb-0 pb-0 d-flex justify-content-between align-items-center">
+                                        Date
+                                        <span>:</span>
+                                    </div>
+                                    <div class="col-6 mb-0 pb-0 px-0">
+                                        {{question_paper.date}}
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-end" style="font-weight: 600;">
+                                    <div class="col-5 mb-0 pb-0 d-flex justify-content-between align-items-center">
+                                        Duration
+                                        <span>:</span>
+                                    </div>
+                                    <div class="col-6 mb-0 pb-0 px-0">
+                                        {{question_paper.duration}}
+                                    </div>
+                                </div>
+
+                                {% endif %}
+                                
+                                <div class="row justify-content-end" style="font-weight: 600;">
+                                    <div class="col-5 mb-0 pb-0 d-flex justify-content-between align-items-center">
+                                        Marks
+                                        <span>:</span>
+                                    </div>
+                                    <div class="col-6 mb-0 pb-0 px-0">
+                                        {{question_paper.total_marks}}
+                                    </div>
+                                </div>
+                                
+                            </div>                            
+
+                        </div>
+
+                        <hr>
+
+                        {% for division in question_paper.divisions.all %}
+                            <div class="row g-2">
+                                <div class="col-10">
+                                    <p class="card-text fw-semibold">Q({{forloop.counter}}). {{division.title}}</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="card-text">Marks: {{division.marks}}</p>
+                                </div>
+                                <div class="col-12">
+                                    {% for question in division.questions.all  %}
+                                        <p class="card-text ps-4 pb-0 mb-2">{{forloop.parentloop.counter}}.{{forloop.counter}} {{question.title}}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock main %}

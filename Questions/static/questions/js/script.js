@@ -209,7 +209,7 @@ if (unitDropdown) {
 
 // QUESTION PAPER 
 
-const typeSelect = document.getElementById('type');
+const typeSelect = document.getElementById('paperType');
 function toggleDateTimeSection() {
     const dateTimeSection = document.getElementById('dateTimeSection');
     const dateField = document.getElementById('date');
@@ -281,7 +281,7 @@ if (createDivisionForm) {
     })
 }
 
-addQuestionsForm = document.getElementById('addQuestionsForm')
+const addQuestionsForm = document.getElementById('addQuestionsForm')
 if (addQuestionsForm) {
     addQuestionsForm.addEventListener('submit', function(event) {
         event.preventDefault();

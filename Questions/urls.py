@@ -14,5 +14,6 @@ urlpatterns = [
     path('create/question-paper/', create_question_paper_view, name='create-question-paper-view'),
     path('create/division/<int:question_paper_id>/', create_division_view, name='create-division-view'),
     path('add/questions/<int:division_id>/<int:question_paper_id>/', add_questions_view, name='add-questions-view'),
+    path('detail/question-paper/<int:question_paper_id>/', detail_question_paper_view, name='detail-question-paper-view'),
 
 ]

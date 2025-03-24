@@ -191,9 +191,9 @@ def create_question_paper_view(request):
         if int(end_year) - int(start_year) > 1:
             return JsonResponse({'status':'error', 'message':f'Academic year cannot be more than 1 Year.'})
         
-        if type != 'Assignment':
-            if type == 'Unit Test':
-                if QuestionPaper.objects.filter(paper_type=paper_title, paper_title__iexact=paper_title ,subject=subject, academic_year=academic_year).exists():
+        if paper_type != 'Assignment':
+            if paper_type == 'Unit Test':
+                if QuestionPaper.objects.filter(paper_type=paper_type, paper_title__iexact=paper_title ,subject=subject, academic_year=academic_year).exists():
                     return JsonResponse({'status':'error', 'message':f'{subject.name} {paper_title} paper for {academic_year} already exists.'})
             else:
                 if QuestionPaper.objects.filter(paper_type=paper_type, paper_title__iexact=paper_title, subject=subject, academic_year=academic_year).exists():
@@ -214,7 +214,7 @@ def create_question_paper_view(request):
         )
 
         messages.success(request, f'Question Paper for {question_paper} created successfully.')
-        return JsonResponse({'status':'success', 'success_url':f'/teacher/create/divison/{question_paper.id}/'})
+        return JsonResponse({'status':'success', 'success_url':f'/teacher/create/division/{question_paper.id}/'})
     else:
         question_sets_subjects = Subject.objects.filter(
             question_sets__in=QuestionSet.objects.filter(subject__in=request.user.profile.subjects.all())
@@ -222,6 +222,7 @@ def create_question_paper_view(request):
         return render(request, 'question_papers/create_question_paper.html', context={'question_sets_subjects':question_sets_subjects})
 
 def create_division_view(request, question_paper_id):
+
     question_paper = QuestionPaper.objects.get(id=question_paper_id)
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -244,7 +245,7 @@ def create_division_view(request, question_paper_id):
             extras = int(extras)
         )
         question_paper.divisions.add(division)
-        question_paper.save()
+        question_paper.status_check()
 
         messages.success(request, f'Division for {question_paper.paper_title} created successfully.')
         return JsonResponse({'status':'success', 'success_url':f'/teacher/add/questions/{division.id}/{question_paper.id}/'})
@@ -266,7 +267,7 @@ def add_questions_view(request, division_id, question_paper_id):
             question = Question.objects.get(id=id)
             selected_questions.append(question)
         division.questions.add(*selected_questions)
-        division.save()
+        division.status_check()
 
         if question_paper.divisions.all().count() < question_paper.division:
             success_url = f'/teacher/create/division/{question_paper.id}/'
@@ -275,7 +276,6 @@ def add_questions_view(request, division_id, question_paper_id):
 
         messages.success(request, f'Questions added for {question_paper.paper_title}, {question_paper.subject.name} created successfully.')
         return JsonResponse({'status':'success', 'success_url':success_url})
-
     subject = question_paper.subject
     question_mark = division.question_mark
     question_sets = QuestionSet.objects.filter(subject=subject)
@@ -287,3 +287,12 @@ def add_questions_view(request, division_id, question_paper_id):
         )
     )
     return render(request, 'question_papers/add_questions.html', context={'division':division, 'question_sets':question_sets, 'question_paper':question_paper})
+
+def detail_question_paper_view(request, question_paper_id):
+    question_paper = QuestionPaper.objects.get(id=question_paper_id)
+    return render(request, 'question_papers/detail_question_paper.html', context={'question_paper':question_paper})
+
+def list_question_papers_view(request):
+    question_papers = 1
+    return render(request, 'question_papers/list_question_papers.html', context={'question_paper':question_paper})
+

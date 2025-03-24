@@ -39,7 +39,7 @@ class Division(models.Model):
     questions = models.ManyToManyField(Question, related_name='divisions', blank=True)
     status = models.CharField(max_length=100, null=False, blank=False, default='Incomplete')
 
-    def save(self ,*args, **kwargs):
+    def status_check(self ,*args, **kwargs):
         if self.questions.count() == (self.marks / self.question_mark) + (self.extras):
             self.status = "Complete"
         super().save(*args, **kwargs)
@@ -64,9 +64,9 @@ class QuestionPaper(models.Model):
     status = models.CharField(max_length=100, null=False, blank=False, default='Incomplete')
     created_date = models.DateField(auto_now_add=True)
 
-    def save(self ,*args, **kwargs):
+    def status_check(self ,*args, **kwargs):
         status = 'Complete'
-        for division in self.divisions:
+        for division in self.divisions.all():
             if division.status == 'Incomplete':
                 status = 'Incomplete'
         self.status = status
